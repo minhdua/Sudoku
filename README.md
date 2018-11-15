@@ -4,7 +4,7 @@ Ban đầu ta tao ra một Class với những thuộc tính như:
 * Một bảng có kích thước 9x9 tức là 81 ô
   - Mỗi một ô gồm có 2 thuộc tính là giá trị của ô đó. có miền giá trị từ 1..9 và Màu của ô
   + Màu của ô gồm 2 màu là màu cố định và màu mặc định màu. Màu cố định biểu thị các giá trị trong ô là không được phép thay đổi khi giải sudoku. Chúng cũng giúp cho ta dễ dàng phân biệt với những giá trị mà ta cần thiếp lập với ô không được phép thiếp lập giá trị cho chúng
-* 3 Mảng 1 chiều với 9 phần tử. markrow,markcol,markblock dùng để đánh dấu các phần tử có giá trị z trong hàng x, trong cột y và trong vùng x/3*(3)+y/3. với x,y tương ứng là chỉ số hàng và chỉ số cột của một ô cần nhập giá trị z. công thức x/3*(3)+y/3 dùng để tính chỉ số lô cần đánh dấu.
+* 1 mảng 1 chiều 10 phần tử là các số nguyên. chỉ số phần tử biểu thị giá trị z của ô từ 1..9. mỗi phần tử có 32 bit. ta lấy 9 bít đầu sẽ thể hiện giá trị z có tồn tại trong hàng x hay không với x=1..9, 9 bit tiếp theo thể hiện giá trị z có tồn tại trong cột y hay không với y=10..18, 9 bit tiếp theo sẽ thể hiện giá trị z trong lô thứ t với t=19..27.
 * Level đại diện cho mức độ khó của sudoku. khi sinh sukoku ta dựa vào level để sinh ra số lượng phần tử tương ứng. level càng cao thì sinh ra càng nhiều giá trị khi đó mức độ sẽ càng dễ đối với người chơi. level càng thấp tức là số lượng giá trị được sinh ra càng ít, càng khó để cho người chơi giải quyết. tuy nhiên nếu level càng cao thì sinh sudoku có thể sẽ rất lâu, và có thể sudoku được sinh ra sẽ không thể tìm ra lời giải nào.
 
 Class có các phương thức như sau:
@@ -21,17 +21,21 @@ Class có các phương thức như sau:
       2.1.1. Nếu không: nếu không làm mới sudoku đến bước 3
       2.1.1. Nếu có: đặt giá trị mới vào ô trống x,y đến bước 3
   3. Lặp lại bước 1 đến khi số lượng sinh ra bằng đúng level của sudoku
-* Phương thưc kiểm tra hợp lệ
-  - Tham só vào x,y,z 
-  - Giá trị trả về là true nếu z không nằm trong hàng x, z không nằm trong cột y và z không nằm trong lô x/3* 3+y/3
-  - Giá trị trả về là false trong trường hợp ngược lại
+* Phương thức kiểm tra giá trị z thể đặt có trong hàng x, cột y, lô t hay không
+  - code=((1<<x) + (1<<(y+9)) + (1<<(t+18)));
+  - mark[z] & code == code
+  -trả về true nếu có vể false nếu không
+* Phương thức bật bit đánh dấu giá trị z vào các nhóm x,y,z
+  - mark[z] |= code
+* Phương thức tắt bit đánh dấu giá trị z ở các nhóm
+  - mark[z] &= ~code
 * Phương thức đặt giá trị vào ô x,y
   - Tham số vào gồm x,y,z
   - Đặt z vào ô x,y
-  - Đánh dấu bít thứ z của 3 mảng 1 chiều
+  - Bật bit đánh dấu z trong nhóm
 * Phương thức xóa giá trị ô x,y
   - Đưa về giá trị 0
-  - Xóa đánh dấu vị trị z trong 3 mảng 1 chiều
+  - Tắt bít đánh dấu z
 * Phương thưc người chơi giải quyết sudoku
   - Cho phép người chơi nhập vào 3 giá trị
   - Nếu giá trị nhập vào là -1 thì kết thúc
@@ -61,3 +65,4 @@ Class có các phương thức như sau:
   - Hiển thị dòng ngăn các lô
   - Hiển thị các chỉ mục dòng các giá trị sudou và Biên ngăn các lô
   - Hiển thị màu cố định đối với các số đã sinh
+  
