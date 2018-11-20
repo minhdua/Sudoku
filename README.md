@@ -1,68 +1,62 @@
 # Sudoku
-Project này trình bày những vấn đề cơ bản về Sudoku. Project được viết bằng C++
-Ban đầu ta tao ra một Class với những thuộc tính như:
-* Một bảng có kích thước 9x9 tức là 81 ô
-  - Mỗi một ô gồm có 2 thuộc tính là giá trị của ô đó. có miền giá trị từ 1..9 và Màu của ô
-  + Màu của ô gồm 2 màu là màu cố định và màu mặc định màu. Màu cố định biểu thị các giá trị trong ô là không được phép thay đổi khi giải sudoku. Chúng cũng giúp cho ta dễ dàng phân biệt với những giá trị mà ta cần thiếp lập với ô không được phép thiếp lập giá trị cho chúng
-* 1 mảng 1 chiều 10 phần tử là các số nguyên. chỉ số phần tử biểu thị giá trị z của ô từ 1..9. mỗi phần tử có 32 bit. ta lấy 9 bít đầu sẽ thể hiện giá trị z có tồn tại trong hàng x hay không với x=1..9, 9 bit tiếp theo thể hiện giá trị z có tồn tại trong cột y hay không với y=10..18, 9 bit tiếp theo sẽ thể hiện giá trị z trong lô thứ t với t=19..27.
-* Level đại diện cho mức độ khó của sudoku. khi sinh sukoku ta dựa vào level để sinh ra số lượng phần tử tương ứng. level càng cao thì sinh ra càng nhiều giá trị khi đó mức độ sẽ càng dễ đối với người chơi. level càng thấp tức là số lượng giá trị được sinh ra càng ít, càng khó để cho người chơi giải quyết. tuy nhiên nếu level càng cao thì sinh sudoku có thể sẽ rất lâu, và có thể sudoku được sinh ra sẽ không thể tìm ra lời giải nào.
-
-Class có các phương thức như sau:
-* Phương thức xây dựng mặc nhiên. 
-    - Làm sạch tất các các thuộc tính của sudoku
-* Phương thức xây dựng sao chép
-    - Sao chép các thuộc tính từ một sudoku khác
-* Phương thức hủy 
-    - Loại bỏ đối tượng sudoku
-* Phương thức sinh ngẫu nhiên các giá trị của sudoku
-  1. Sinh ngẫu nhiên vị trí x,y,d
-  2. Nếu ô x,y trống thực hiện sinh tuần tự đố với z từ 1+ 1 .. 9 + d % 9
-    2.1. Kiểm tra giá trị z có hợp lệ hay không 
-      2.1.1. Nếu không: nếu không làm mới sudoku đến bước 3
-      2.1.1. Nếu có: đặt giá trị mới vào ô trống x,y đến bước 3
-  3. Lặp lại bước 1 đến khi số lượng sinh ra bằng đúng level của sudoku
-* Phương thức kiểm tra giá trị z thể đặt có trong hàng x, cột y, lô t hay không
-  - code=((1<<x) + (1<<(y+9)) + (1<<(t+18)));
-  - mark[z] & code == code
-  -trả về true nếu có vể false nếu không
-* Phương thức bật bit đánh dấu giá trị z vào các nhóm x,y,z
-  - mark[z] |= code
-* Phương thức tắt bit đánh dấu giá trị z ở các nhóm
-  - mark[z] &= ~code
-* Phương thức đặt giá trị vào ô x,y
-  - Tham số vào gồm x,y,z
-  - Đặt z vào ô x,y
-  - Bật bit đánh dấu z trong nhóm
-* Phương thức xóa giá trị ô x,y
-  - Đưa về giá trị 0
-  - Tắt bít đánh dấu z
-* Phương thưc người chơi giải quyết sudoku
-  - Cho phép người chơi nhập vào 3 giá trị
-  - Nếu giá trị nhập vào là -1 thì kết thúc
-  - Nếu giá trị không phải là -1 thì nhận vào 3 tham số
-  - Nếu giá trị nhập vào là hợp lệ. tọa độ trong khoảng 0..8 giá trị ô cần thiếp lập là 0..9 thì 
-  + Nếu tọa độ x,y hợp lệ (ô có màu mặt đinh)
-  ++ Nếu giá trị là 0 thì xóa ô đó
-  ++ Người lại kiểm tra giá trị hợp lệ
-  +++ Nếu hợp lệ thì xóa giá trị cũ,đặt giá trị mới vào ô
-  +++ Nếu không hợp lệ thì thông báo lỗi 
-  - Nếu tất cả các ô đều được đánh dấu thì thông báo đã hoàn thành (các giá trị trong hàng hoặc cột hoặc lô bằng 511)
-* Phương thức máy giải quyết sudoku
-  - Nhận vào 2 tham số x,y là ô hiện tại đang giải quyết
-  - Trả về giá trị true nếu như vấn đề đã được giải quyết
-  - Vấn đề đã được giả quyết khi không còn ô trống nào
-  - Trả về giá trị false nếu nhưng không tìm được giải pháp
-  - Giải Thuật Quay Lui
-    1.Lấy ô trống kế tiếp ô x,y
-    2.Nếu như còn ô trống thì lần lượt xét các giá trị từ 1 đền 9 cho ô trống đó
-    3.Nếu giá trị hợp lệ thì đặt giá trị vào ô
-    4.Thực hiện đệ quy đối với ô trống kế tiếp. Nếu
-    4.1 Không thể đi tiếp thì Quay lui lại (Xóa ô hiện tại) thực hiên với giá trị tiếp theo
-    4.2 Có thể đi tiếp thực hiện đệ quy
-    4.3 Tìm thấy kết quả dừng chương trình
-* Phương thức hiển thị
-  - Hiển thị dòng chỉ mục cột
-  - Hiển thị dòng ngăn các lô
-  - Hiển thị các chỉ mục dòng các giá trị sudou và Biên ngăn các lô
-  - Hiển thị màu cố định đối với các số đã sinh
+Project này Mô tả cách xây dựng các chương trình cho bài toán Sudoku. Được viết bằng C++ 
+Tạo Class sudoku với
+I. Các thuộc tính
+  1. Lưới -> kiễu mảng 2 chiều gồm 9x9 = 81 ô
+    Mỗi ô gồm: Giá trị + Màu sắc
+    Giá trị : 1-9
+    Màu : màu trắng (màu mặc định, màu đỏ màu đại diện cho giá trị không thể thay đổi được)
+  2. Level -> kiểu số nguyên không dấu 
+    Có giá trị từ 0 đến 81. tuy trong phần này chỉ tính 3 cấp sudoku là 15 20 25 tương ứng vơi số ô được sinh ra ngẫu nhiên trong lưới
+II. Các phương thức
+  1. Xây dựng mặc nhiên. 
+    Khởi tạo các giá trị của ô là 1
+    Khởi tạo level là 0 (chưa có ô nào được sinh ra)
+    Khởi tạo màu sắc mặc đinh là màu trắng
+  2. Xây dựng sao chép
+    Sao chép các thuộc tính từ một sudoku khác
+  3. Hủy
+    Giải phóng Sudoku
+  4. Kiểm tra hàng
+    Gồm 2 đối số vị trí hàng x và giá trị z
+    Tìm z trên hàng x. Tìm thấy z trả về false (không hợp lệ) Nếu không tìm thấy trả về true(hợp lệ)
+  5. Kiểm tra cột
+    Gồm 2 đối số vị trí cột y và giá trị z
+    Tìm z trên cột. Nếu tìm thấy z trả về false (không hợp lệ). Nếu không tìm thấy trả về true(hợp lệ)
+  6. Kiểm tra lô chứa ô x,y
+    Gồm 3 đối số vị trí hàng x, cột y và giá trị z
+    xác định các ô đầu tiên của 9 lô qua công thức x=x-x%3 y=y-y%3
+    Tìm z trên lô bắt đầu từ ô x,y nếu tìm đươc z thì trả về false (không hợp lên) ngược lại trả về hợp lệ
+  7. Kiểm tra hợp lệ
+    Trả về true nêu kiểm tra hàng , cột , lô đều là true
+    Trả về false trong trường hợp ngược lại
+  8. Sinh Ngẫu nhiên
+    Sinh ngẫu nhiên vị trí x,y
+    Sinh ngẫu nhiên giá trị z
+    Nếu ô(x,y) chưa có giá trị và giá trị z là hợp lệ thì thêm z vào ô x,y
+  9. Kiểm tra ô trống
+    Có 2 đối số. x,y tộ độ 1 ô nào đó.
+    Lấy tọa độ ô trống kế tiếp x,y. Nếu lấy được trả về true, không lấy được trả về false
+  10. Người chơi
+    Yêu cầu người chơi nhập vào 3 giá trị: x,y,z
+    Nếu 1 trong 3 giá trị là -1 sẽ thoát khỏi chương trình
+    Nếu giá trị nhập vào là hợp lệ. tọa độ trong khoảng 0..8 giá trị ô cần thiếp lập là 0..9 thì 
+    Nếu ô x,y hợp lệ (ô có màu trắng)
+      Nếu hợp lệ thì thêm z vào ô x,y
+      Không hợp lệ báo chính xác vi phạm ràng buộc nào
+    Nếu không còn ô trống thì thoát
+  11. Máy chơi
+    Có 2 đối số x,y
+    Ban đầu x=0,y=0;
+    1. Nếu không còn được ô trống kếu tiếp ô x,y thì trả về true ngược là thực hiện 2.
+    2. Lấy 1 giá trị z trong miền giá trị (1..9). Nếu z hợp lệ thì gán cho ô(x,y) và thực hiện đệ quy đối với ô trống kế tiếp. Nếu không có z nào hợp lệ trả về giá trị false
+    3. Nếu giá trị là false thì tiến hành quay lui để thay đổi phương án trước đó
+  12. Hiển thị
+    Hiển thị chỉ mục hàng, cột vào các dấu để ngăn các các lô với nhau. 
+    Màu sắc của các ô cố định là màu đỏ các ô khác là màu trắng
+  13. Nhập sudoku từ bàn phím
+    lặp 81 lần
+    Nếu z là số thì gán ô tương ứng có giá trị z ngược lại z='.' gán ô tương ứng là 0
+  14. Xuât đáp sudoku màn hình theo tọa đọ
+    xuất 3 giá trị x,y,z là đáp án của sudoku
   
