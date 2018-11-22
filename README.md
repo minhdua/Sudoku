@@ -1,20 +1,18 @@
 # Sudoku
 Project này Mô tả cách xây dựng các chương trình cho bài toán Sudoku. Được viết bằng C++ 
 Tạo Class sudoku với
-I. Các thuộc tính
+## Các thuộc tính
   1. Lưới -> kiễu mảng 2 chiều gồm 9x9 = 81 ô
     Mỗi ô gồm: Giá trị + Màu sắc
     Giá trị : 1-9
     Màu : màu trắng (màu mặc định, màu đỏ màu đại diện cho giá trị không thể thay đổi được)
   2. Level -> kiểu số nguyên không dấu 
     Có giá trị từ 0 đến 81. tuy trong phần này chỉ tính 3 cấp sudoku là 15 20 25 tương ứng vơi số ô được sinh ra ngẫu nhiên trong lưới
-II. Các phương thức
+## Các phương thức
   1. Xây dựng mặc nhiên. 
     Khởi tạo các giá trị của ô là 1
     Khởi tạo level là 0 (chưa có ô nào được sinh ra)
     Khởi tạo màu sắc mặc đinh là màu trắng
-  2. Xây dựng sao chép
-    Sao chép các thuộc tính từ một sudoku khác
   3. Hủy
     Giải phóng Sudoku
   4. Kiểm tra hàng
@@ -54,9 +52,25 @@ II. Các phương thức
   12. Hiển thị
     Hiển thị chỉ mục hàng, cột vào các dấu để ngăn các các lô với nhau. 
     Màu sắc của các ô cố định là màu đỏ các ô khác là màu trắng
-  13. Nhập sudoku từ bàn phím
-    lặp 81 lần
-    Nếu z là số thì gán ô tương ứng có giá trị z ngược lại z='.' gán ô tương ứng là 0
-  14. Xuât đáp sudoku màn hình theo tọa đọ
-    xuất 3 giá trị x,y,z là đáp án của sudoku
-  
+  ### Quá tải toán tử
+       - Quá tải toán tử gán =
+          Sao chép các thuộc tính từ một sudoku khác
+       - Quá tải toán tử nhập >>
+            lặp 81 lần
+            Nếu z là số thì gán ô tương ứng có giá trị z ngược lại z='.' gán ô tương ứng là 0
+       - Quá tải toán tử xuất <<
+             xuất 3 giá trị x,y,z là đáp án của sudoku
+        
+  ### menu
+  0.    Thoát 
+  1.    Hiển Thị sudoku
+  2.    Chọn level
+  - Level 1 --> 25
+  - Level 2 --> 20
+  - Level 3 --> 15
+  - Tùy chỉnh
+  3.    Người chơi sudoku
+  4.    Máy chơi sudoku
+  5.    Sinh sudoku
+  6.    Nhập sudoku
+  7.    Xuất sudoku
