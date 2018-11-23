@@ -52,6 +52,8 @@ Tạo Class sudoku với
   12. Hiển thị
     Hiển thị chỉ mục hàng, cột vào các dấu để ngăn các các lô với nhau. 
     Màu sắc của các ô cố định là màu đỏ các ô khác là màu trắng
+  13. Làm sạch
+    Xóa tất các các phần tử trong ô
   ### Quá tải toán tử
        - Quá tải toán tử gán =
           Sao chép các thuộc tính từ một sudoku khác
@@ -71,6 +73,6 @@ Tạo Class sudoku với
   - Tùy chỉnh
   3.    Người chơi sudoku
   4.    Máy chơi sudoku
-  5.    Sinh sudoku
+  5.    Sinh mới sudoku
   6.    Nhập sudoku
   7.    Xuất sudoku
